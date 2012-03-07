@@ -12,9 +12,10 @@ namespace Common.Helpers.AsUrl
             char sep = '?';
             if (str.Contains(sep)) { sep = '&'; }
             StringBuilder sb = new StringBuilder(str);
-            foreach(var obj in values.Select(x=>x.ToDictionary())){
+            foreach(var dict in values.Select(x=>x.ToDictionary())){
 
-                foreach(var kvp in dict){
+                foreach (var kvp in dict)
+                {
 
                     sb.Append(kvp.Key);
                     sb.Append(sep);
