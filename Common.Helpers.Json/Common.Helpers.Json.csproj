@@ -56,6 +56,16 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>ROBOCOPY "$(ProjectDir)$(OutDir)." *.dll *.pdb "$(SolutionDir)build"
+     
+      if errorlevel 4 goto BuildEventFailed
+      if errorlevel 0 goto end
+      :BuildEventFailed echo FILECOPY for $(ProjectName) FAILED
+      exit 1
+      :end echo FILECOPY for $(ProjectName) COMPLETED OK
+      exit 0</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

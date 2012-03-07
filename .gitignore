@@ -39,14 +39,9 @@ _ReSharper*/
 #Subversion files
 .svn
 
-#umbraco
+
 build/*
-#!build/[Bb]in/*
-!build/scripts
-!build/macroScripts
-!build/css
-!build/less
-!build/masterpages
+
 
 # Office Temp Files
 ~$*
