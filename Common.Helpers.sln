@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Helpers", "Common.Helpers\Common.Helpers.csproj", "{0403FF1C-CF43-4071-973D-9C7CC3E97E5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Helpers.Web", "Common.Helpers.Web\Common.Helpers.Web.csproj", "{19229A4C-08EF-4394-8CA7-A12AD3EA4C90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Helpers.Json", "Common.Helpers.Json\Common.Helpers.Json.csproj", "{5392345A-2263-4768-956B-8DBA19BBB381}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0403FF1C-CF43-4071-973D-9C7CC3E97E5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0403FF1C-CF43-4071-973D-9C7CC3E97E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0403FF1C-CF43-4071-973D-9C7CC3E97E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0403FF1C-CF43-4071-973D-9C7CC3E97E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19229A4C-08EF-4394-8CA7-A12AD3EA4C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19229A4C-08EF-4394-8CA7-A12AD3EA4C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19229A4C-08EF-4394-8CA7-A12AD3EA4C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19229A4C-08EF-4394-8CA7-A12AD3EA4C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5392345A-2263-4768-956B-8DBA19BBB381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5392345A-2263-4768-956B-8DBA19BBB381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5392345A-2263-4768-956B-8DBA19BBB381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5392345A-2263-4768-956B-8DBA19BBB381}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
