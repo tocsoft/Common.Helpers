@@ -41,6 +41,10 @@ _ReSharper*/
 
 
 build/*
+#exclude cheking in packages
+packages/*
+#but do include config
+!packages/repositories.config
 
 
 # Office Temp Files
