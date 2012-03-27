@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Common.Helpers;
+using Common.Helpers.Web;
 using umbraco.cms.businesslogic.macro;
 using umbraco.MacroEngines;
 
@@ -18,17 +19,20 @@ namespace Common.Umbraco
 
             if (properties != null)
             {
-                var dic = properties.ToDictionary();
-
-                foreach (var d in dic)
+                foreach (var prop in properties)
                 {
-                    macroModel.Properties.Add(new MacroPropertyModel(d.Key, d.Value.ToString()));
+                    var dic = prop.ToDictionary();
+
+                    foreach (var d in dic)
+                    {
+                        macroModel.Properties.Add(new MacroPropertyModel(d.Key, d.Value.ToString()));
+                    }
                 }
             }
 
             var control = macro.renderMacro(new System.Collections.Hashtable(), ctx.Node.Id);
 
-            return new HtmlString("");//control.RenderControlToString());
+            return new HtmlString(control.RenderControlToString());
         }
     }
 }
