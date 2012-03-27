@@ -26,7 +26,7 @@ namespace Common.Umbraco
                 }
             }
 
-            var control = macro.renderMacro(macroModel, new System.Collections.Hashtable(), ctx.Node.Id);
+            var control = macro.renderMacro(new System.Collections.Hashtable(), ctx.Node.Id);
 
             return new HtmlString("");//control.RenderControlToString());
         }
