@@ -45,10 +45,10 @@
       <HintPath>..\3rdParty\UmbracoLibs\cms.dll</HintPath>
     </Reference>
     <Reference Include="Common.Helpers">
-      <HintPath>..\packages\Common.Helpers.1.0.35\lib\net40\Common.Helpers.dll</HintPath>
+      <HintPath>..\packages\Common.Helpers.1.0.36\lib\net40\Common.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="Common.Helpers.Web">
-      <HintPath>..\packages\Common.Helpers.Web.1.0.35\lib\net40\Common.Helpers.Web.dll</HintPath>
+      <HintPath>..\packages\Common.Helpers.Web.1.0.36\lib\net40\Common.Helpers.Web.dll</HintPath>
     </Reference>
     <Reference Include="interfaces">
       <HintPath>..\3rdParty\UmbracoLibs\interfaces.dll</HintPath>
@@ -72,6 +72,9 @@
   <ItemGroup>
     <Compile Include="DynamicContextExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
