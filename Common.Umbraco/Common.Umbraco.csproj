@@ -44,8 +44,11 @@
     <Reference Include="cms">
       <HintPath>..\3rdParty\UmbracoLibs\cms.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Common.Helpers">
       <HintPath>..\packages\Common.Helpers.1.0.35\lib\net40\Common.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Helpers.Web">
+      <HintPath>..\packages\Common.Helpers.Web.1.0.35\lib\net40\Common.Helpers.Web.dll</HintPath>
     </Reference>
     <Reference Include="interfaces">
       <HintPath>..\3rdParty\UmbracoLibs\interfaces.dll</HintPath>

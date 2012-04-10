@@ -34,5 +34,30 @@ namespace Common.Umbraco
 
             return new HtmlString(control.RenderControlToString());
         }
+
+        public static string ImageUrl(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        {
+            var mediaProp = ctx.Node.GetProperty(alias);
+            string url = null;
+            if (mediaProp != null && !string.IsNullOrWhiteSpace(mediaProp.Value))
+            {
+                DynamicMedia media = ctx.Library.MediaById(mediaProp.Value);
+                if (media != null)
+                {
+                    if (media.HasProperty(cropProperty))
+                    {
+                        dynamic d = new DynamicXml(media.GetPropertyValue(cropProperty)).Find("@name", cropName);
+                        url = (string)d.url;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(url) &&  media.HasValue("umbracoFile"))
+                    {
+                        url = media.GetPropertyValue("umbracoFile");
+                    }
+                }
+            }
+
+            return url ?? "";
+        }
     }
 }
