@@ -6,6 +6,7 @@ using System.Web;
 using Common.Helpers;
 using Common.Helpers.Web;
 using umbraco.cms.businesslogic.macro;
+using umbraco.interfaces;
 using umbraco.MacroEngines;
 
 namespace Common.Umbraco
@@ -35,9 +36,9 @@ namespace Common.Umbraco
             return new HtmlString(control.RenderControlToString());
         }
 
-        public static string ImageUrl(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        public static string ImageUrl(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
         {
-            var mediaProp = ctx.Node.GetProperty(alias);
+            var mediaProp = node.GetProperty(alias);
             string url = null;
             if (mediaProp != null && !string.IsNullOrWhiteSpace(mediaProp.Value))
             {
@@ -50,7 +51,7 @@ namespace Common.Umbraco
                         url = (string)d.url;
                     }
 
-                    if (string.IsNullOrWhiteSpace(url) &&  media.HasValue("umbracoFile"))
+                    if (string.IsNullOrWhiteSpace(url) && media.HasValue("umbracoFile"))
                     {
                         url = media.GetPropertyValue("umbracoFile");
                     }
@@ -58,6 +59,11 @@ namespace Common.Umbraco
             }
 
             return url ?? "";
+        }
+
+        public static string ImageUrl(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        {
+            return ImageUrl(ctx, (DynamicNode)ctx.Model, alias, cropProperty, cropName);
         }
     }
 }
