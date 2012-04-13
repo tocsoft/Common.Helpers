@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Web;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
-using System.Reflection;
-using System.Web;
-using FluentNHibernate.Cfg.Db;
 
 namespace Common
 {
     public class Database
     {
-        public enum DbTypes { 
+        public enum DbTypes {
             SqlCE,
             SqlServer
         }
@@ -28,8 +28,8 @@ namespace Common
                      m.FluentMappings.Add(t);
              }))
          {
-
          }
+
          public Database(string connectionString, params Assembly[] mappingfiles)
              : this(connectionString, (Action<MappingConfiguration>)(m =>
              {
@@ -37,26 +37,21 @@ namespace Common
                      m.FluentMappings.AddFromAssembly(a);
              }))
          {
+         }
 
+         protected virtual IPersistenceConfigurer GetDbConfig(string connectionString)
+         {
+             return MsSqlConfiguration.MsSql2005.ConnectionString(connectionString);
          }
 
          public Database(string connectionString, Action<MappingConfiguration> mappings)
         {
-            DbTypes type = DbTypes.SqlServer;
-            if (connectionString.ToLower().Contains(".sdf"))
-                type = DbTypes.SqlCE;
-
-            sessionFactory = 
-                Fluently.Configure().Database(() =>{
-                    if (type == DbTypes.SqlCE)
-                        return MsSqlCeConfiguration.Standard.ConnectionString(connectionString);
-                    else
-                        return MsSqlConfiguration.MsSql2005.ConnectionString(connectionString);
-                }
-                ).Mappings(mappings)
+            sessionFactory =
+                Fluently.Configure().Database(GetDbConfig(connectionString)).Mappings(mappings)
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
                 .BuildSessionFactory();
         }
+
         public ISession Session
         {
             get
@@ -70,22 +65,18 @@ namespace Common
                     sess = sessionFactory.OpenSession();
 
                     ctx.Items[ItemKey] = sess;
-
                 }
 
                 return sess;
             }
         }
 
-      
         public T UnitOfWork<T>(Func<ISession, T> uow) {
-            
             using(ISession sess = sessionFactory.OpenSession()){
                 T val = uow(sess);
                 sess.Flush();
                 return val;
             }
         }
-
     }
 }
