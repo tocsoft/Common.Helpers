@@ -39,11 +39,6 @@ namespace Common
          {
          }
 
-         protected virtual IPersistenceConfigurer GetDbConfig(string connectionString)
-         {
-             return MsSqlConfiguration.MsSql2005.ConnectionString(connectionString);
-         }
-
          public Database(string connectionString, Action<MappingConfiguration> mappings)
         {
             sessionFactory =
@@ -51,6 +46,11 @@ namespace Common
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
                 .BuildSessionFactory();
         }
+
+         protected virtual IPersistenceConfigurer GetDbConfig(string connectionString)
+         {
+             return MsSqlConfiguration.MsSql2005.ConnectionString(connectionString);
+         }
 
         public ISession Session
         {
