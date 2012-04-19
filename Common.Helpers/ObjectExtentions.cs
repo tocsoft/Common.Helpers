@@ -1,22 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel;
 using System.Dynamic;
-using System.Runtime.CompilerServices;
-using System.Reflection;
-using Microsoft.CSharp.RuntimeBinder;
-using System.IO;
+
 using System.Dynamic;
+
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.CSharp.RuntimeBinder;
+
+using System.Runtime.CompilerServices;
+
 using System.Web;
+
+using System.Web;
+
+using Microsoft.CSharp.RuntimeBinder;
+
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace Common.Helpers
 {
         public static class ObjectExtentions
-        { 
+        {
             ///<summary>
             /// Convert an object into a dictionary
             ///</summary>
@@ -49,12 +56,10 @@ namespace Common.Helpers
                     var value = descriptor.GetValue(@object);
 
                     hash.Add(key, value);
-
                 }
-                
+
                 if (dynNames != null)
                 {
-
                     Type objType = @object.GetType();
 
                     foreach (string dynName in dynNames)
@@ -63,7 +68,6 @@ namespace Common.Helpers
                         var value = GetValue(dynName, dyn, objType);
 
                         hash.Add(key, value);
-
                     }
                 }
                 return hash;
@@ -86,11 +90,9 @@ namespace Common.Helpers
                 }
                 catch (RuntimeBinderException)
                 {
-
                     return null;
                 }
             }
-
 
             public static string ToNiceString(this object o)
             {
@@ -103,8 +105,30 @@ namespace Common.Helpers
                     return o.ToString();
                 else
                     return con.ConvertToString(o);
-
             }
 
+            public static TValue As<TValue>(this object value)
+            {
+                if (value != null)
+                {
+                    Type srcType = value.GetType();
+                    Type destType = typeof(TValue);
+                    var destConverter = System.ComponentModel.TypeDescriptor.GetConverter(destType);
+                    if (destConverter != null && destConverter.CanConvertFrom(srcType))
+                    {
+                        return (TValue)destConverter.ConvertFrom(value);
+                    }
+                    else
+                    {
+                        var sourceConverter = System.ComponentModel.TypeDescriptor.GetConverter(srcType);
+                        if (sourceConverter != null && sourceConverter.CanConvertTo(destType))
+                        {
+                            return (TValue)sourceConverter.ConvertTo(value, destType);
+                        }
+                    }
+                }
+
+                return default(TValue);
+            }
         }
     }
