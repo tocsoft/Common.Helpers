@@ -1,29 +1,37 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-
 namespace Common.Helpers.Web
 {
-    public class Cache 
+    public static class Cache
     {
-        public Cache() {
+        public static T Get<T>(this System.Web.Caching.Cache cache, string key)
+        {
+            return (T)cache.Get(key);
         }
-
-        const string PREFIX = "common_helpers_web_";
-      
 
         public static T Get<T>(string key)
         {
-            return (T)HttpContext.Current.Cache.Get(PREFIX + key);
+            return HttpContext.Current.Cache.Get<T>(key);
         }
 
         public static T TryGet<T>(string key, Func<T> function) {
-            return TryGet(key, new TimeSpan(0, 10, 0), function);
+            return HttpContext.Current.Cache.TryGet<T>(key, function);
         }
+
+        public static T TryGet<T>(this System.Web.Caching.Cache cache, string key, Func<T> function)
+        {
+            return cache.TryGet(key, new TimeSpan(0, 10, 0), function);
+        }
+
         public static T TryGet<T>(string key, TimeSpan cacheOut, Func<T> function)
+        {
+            return HttpContext.Current.Cache.TryGet<T>(key,cacheOut, function);
+        }
+
+        public static T TryGet<T>(this System.Web.Caching.Cache cache, string key, TimeSpan cacheOut, Func<T> function)
         {
             var result = Get<T>(key);
 
@@ -32,12 +40,9 @@ namespace Common.Helpers.Web
                 //get value to add
                 result = function();
                 //add to cache
-                HttpContext.Current.Cache.Insert(PREFIX + key, result, null, DateTime.Now.Add(cacheOut), System.Web.Caching.Cache.NoSlidingExpiration);
+                cache.Insert(key, result, null, DateTime.Now.Add(cacheOut), System.Web.Caching.Cache.NoSlidingExpiration);
             }
             return result;
         }
-
-
     }
-
 }
