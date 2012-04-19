@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Helpers.1.0.32\lib\net40\Common.Helpers.dll</HintPath>
+      <HintPath>..\packages\Common.Helpers.1.0.52\lib\net40\Common.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,6 +49,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="ControlExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
