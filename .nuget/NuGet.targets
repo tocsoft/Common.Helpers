@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
     <PropertyGroup>
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
 
@@ -21,9 +22,9 @@
         <PackageOutputDir Condition="$(PackageOutputDir) == ''">$(TargetDir.Trim('\\'))</PackageOutputDir>
 
         <!-- Package sources used to restore packages. By default will used the registered sources under %APPDATA%\NuGet\NuGet.Config -->
-      <PackageSources>"https://go.microsoft.com/fwlink/?LinkID=230477;http://ci.int.icecreates.com/nuget/nuget"</PackageSources>
+        <PackageSources>""</PackageSources>
 
-      <!-- Enable the restore command to run before builds -->
+        <!-- Enable the restore command to run before builds -->
         <RestorePackages Condition="$(RestorePackages) == ''">false</RestorePackages>
 
         <!-- Property that enables building a package from a project -->
@@ -44,6 +45,7 @@
             $(BuildDependsOn);
             BuildPackage;
         </BuildDependsOn>
+
     </PropertyGroup>
 
     <Target Name="CheckPrerequisites">
@@ -68,4 +70,5 @@
               LogStandardErrorAsError="true"
               Condition=" '$(OS)' == 'Windows_NT' " />
     </Target>
+
 </Project>
