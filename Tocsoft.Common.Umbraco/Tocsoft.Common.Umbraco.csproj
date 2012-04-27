@@ -89,7 +89,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tocsoft.Common.Umbraco.nuspec" />
+    <None Include="Tocsoft.Common.Umbraco.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
