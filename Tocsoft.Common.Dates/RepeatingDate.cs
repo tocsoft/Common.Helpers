@@ -17,6 +17,11 @@ namespace Tocsoft.Common.Dates
 
         public ICollection<RepeatingDatePattern> Exclude { get; set; }
 
+        /// <summary>
+        /// matches all of the include dates and non of the exclude dates
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public bool IsMatchAll(DateTime date)
         {
             return
@@ -25,6 +30,11 @@ namespace Tocsoft.Common.Dates
                 !Exclude.Where(x => x.IsMatch(date)).Any();
         }
 
+        /// <summary>
+        /// mathces any on the inclue dates an no of the exclude dates
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public bool IsMatchAny(DateTime date)
         {
             return
@@ -47,6 +57,11 @@ namespace Tocsoft.Common.Dates
                 .Where(x => IsMatchAny(x));
         }
 
+        /// <summary>
+        /// matches all of the include dates and non of the exclude dates
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public IEnumerable<DateTime> DatesAll(DateTime start, DateTime end)
         {
             var days_in_period = (int)Math.Round(end.Subtract(start).TotalDays);

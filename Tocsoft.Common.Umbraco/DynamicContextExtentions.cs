@@ -20,6 +20,7 @@ namespace Tocsoft.Common.Umbraco
 
             if (properties != null)
             {
+                macroModel.Properties.Clear();
                 foreach (var prop in properties)
                 {
                     var dic = prop.ToDictionary();
@@ -56,18 +57,21 @@ namespace Tocsoft.Common.Umbraco
             return url ?? "";
         }
 
-        private static string ImageUrlFromXml(DynamicNodeContext ctx, string xml , string cropProperty, string cropName)
+        private static string ImageUrlFromXml(DynamicNodeContext ctx, DynamicXml media, string cropProperty, string cropName)
         {
             string url = null;
-            DynamicXml media = new DynamicXml(xml);
             if (media != null)
             {
-                var crop = media.Descendants(x => x.Name == cropProperty).FirstOrDefault();
-                if (crop != null)
+                var crop = new DynamicXml(media.DescendantsOrSelf(x => x.Name == cropProperty).FirstOrDefault().ToXml());
+                try
                 {
-                    dynamic c = crop.Find("@name", cropName);
-                    url = (string)c.url;
+                    if (crop != null)
+                    {
+                        dynamic c = crop.Find("@name", cropName);
+                        url = (string)c.url;
+                    }
                 }
+                catch { }
 
                 if (string.IsNullOrWhiteSpace(url))
                 {
@@ -79,20 +83,47 @@ namespace Tocsoft.Common.Umbraco
             return url ?? "";
         }
 
-        public static string ImageUrl(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
+        public static IEnumerable<string> ImageUrls(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
         {
             var mediaProp = node.GetProperty(alias);
-            string url = null;
+
             if (mediaProp != null && !string.IsNullOrWhiteSpace(mediaProp.Value))
             {
-                int mediaId = 0;
-                if (int.TryParse(mediaProp.Value, out mediaId))
-                    url = ImageUrlFromMediaItem(ctx, mediaId, cropProperty, cropName);
+                if (mediaProp.Value.Contains('<'))
+                {
+                    foreach (var m in new DynamicXml(mediaProp.Value).OfType<DynamicXml>())
+                    {
+                        var url = ImageUrlFromXml(ctx, m, cropProperty, cropName);
+                        if (!url.IsNullOrWhiteSpace())
+                            yield return url;
+                    }
+                }
                 else
-                    url = ImageUrlFromXml(ctx, mediaProp.Value, cropProperty, cropName);
+                {
+                    //we look like a list ofr ids
+                    foreach (var val in mediaProp.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        int mediaId = 0;
+                        if (int.TryParse(val, out mediaId))
+                        {
+                            var url = ImageUrlFromMediaItem(ctx, mediaId, cropProperty, cropName);
+                            if (!url.IsNullOrWhiteSpace())
+                                yield return url;
+                        }
+                    }
+                    //we look like xml
+                }
             }
+        }
 
-            return url ?? "";
+        public static string ImageUrl(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
+        {
+            return ImageUrls(ctx, node, alias, cropProperty, cropName).FirstOrDefault();
+        }
+
+        public static IEnumerable<string> ImageUrls(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        {
+            return ImageUrls(ctx, ctx.Current, alias, cropProperty, cropName);
         }
 
         public static string ImageUrl(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
