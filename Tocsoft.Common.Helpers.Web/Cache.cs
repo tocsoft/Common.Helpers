@@ -14,11 +14,11 @@ namespace Tocsoft.Common.Helpers.Web
 
         public static T Get<T>(string key)
         {
-            return HttpContext.Current.Cache.Get<T>(key);
+            return HttpRuntime.Cache.Get<T>(key);
         }
 
         public static T TryGet<T>(string key, Func<T> function) {
-            return HttpContext.Current.Cache.TryGet<T>(key, function);
+            return HttpRuntime.Cache.TryGet<T>(key, function);
         }
 
         public static T TryGet<T>(this System.Web.Caching.Cache cache, string key, Func<T> function)
