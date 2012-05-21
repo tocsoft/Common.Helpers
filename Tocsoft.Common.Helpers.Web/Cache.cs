@@ -33,7 +33,7 @@ namespace Tocsoft.Common.Helpers.Web
 
         public static T TryGet<T>(this System.Web.Caching.Cache cache, string key, TimeSpan cacheOut, Func<T> function)
         {
-            var result = Get<T>(key);
+            var result = cache.Get<T>(key);
 
             if (result == null)
             {

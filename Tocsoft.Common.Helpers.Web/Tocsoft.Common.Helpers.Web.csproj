@@ -54,8 +54,11 @@
   <ItemGroup>
     <Compile Include="Cache.cs" />
     <Compile Include="ControlExtentions.cs" />
+    <Compile Include="Items.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestExtentions.cs" />
+    <Compile Include="Store.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tocsoft.Common.Helpers\Tocsoft.Common.Helpers.csproj">

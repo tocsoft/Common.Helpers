@@ -57,6 +57,7 @@
     <Compile Include="Async.cs" />
     <Compile Include="EnumberableExtentions.cs" />
     <Compile Include="EnumExtentions.cs" />
+    <Compile Include="ICollectionExtentions.cs" />
     <Compile Include="IDictionaryExtentions.cs" />
     <Compile Include="NumberExtentions.cs" />
     <Compile Include="ObjectExtentions.cs" />
