@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package  xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -13,5 +13,12 @@
 
     <copyright>Copyright 2012</copyright>
     <tags>utils extension</tags>
+    <dependencies>
+
+      <dependency id="Tocsoft.Common.Helpers" version="1.0"  />
+      <dependency id="Tocsoft.Common.Helpers.Web" version="1.0"   />
+
+    </dependencies>
   </metadata>
+
 </package>

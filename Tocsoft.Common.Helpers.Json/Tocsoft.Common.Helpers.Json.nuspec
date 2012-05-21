@@ -13,5 +13,11 @@
 
     <copyright>Copyright 2012</copyright>
     <tags>utils extension</tags>
+
+    <dependencies>
+
+      <dependency id="Tocsoft.Common.Helpers" version="1.0"  />
+
+    </dependencies>
   </metadata>
 </package>
