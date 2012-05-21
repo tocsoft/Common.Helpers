@@ -13,7 +13,7 @@ namespace Tocsoft.Common.Umbraco
 {
     public static class DynamicNodeContextExtentions
     {
-        public static IHtmlString RenderMacro(this DynamicNodeContext ctx, string alias, params object[] properties)
+        public static string RenderMacro(int pageId, string alias, params object[] properties)
         {
             var macro = umbraco.macro.GetMacro(alias);
             var macroModel = macro.Model;
@@ -32,9 +32,14 @@ namespace Tocsoft.Common.Umbraco
                 }
             }
 
-            var control = macro.renderMacro(new System.Collections.Hashtable(), ctx.Node.Id);
+            var control = macro.renderMacro(new System.Collections.Hashtable(), pageId);
 
-            return new HtmlString(control.RenderControlToString());
+            return control.RenderControlToString();
+        }
+
+        public static IHtmlString RenderMacro(this DynamicNodeContext ctx, string alias, params object[] properties)
+        {
+            return new HtmlString(RenderMacro(ctx.Node.Id, alias, properties));
         }
 
         private static string ImageUrlFromMediaItem(DynamicNodeContext ctx, int mediaId, string cropProperty, string cropName)
