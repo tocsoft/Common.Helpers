@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlHtmlString.cs" />
-    <Compile Include="DynamicContextExtentions.cs" />
+    <Compile Include="RazorLibraryExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
