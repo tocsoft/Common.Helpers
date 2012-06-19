@@ -8,44 +8,48 @@ using Tocsoft.Common.Helpers.Web;
 using umbraco.cms.businesslogic.macro;
 using umbraco.interfaces;
 using umbraco.MacroEngines;
+using umbraco.MacroEngines.Library;
 
 namespace Tocsoft.Common.Umbraco
 {
-    public static class DynamicNodeContextExtentions
+    public static class RazorLibraryExtentions
     {
         public static string RenderMacro(int pageId, string alias, params object[] properties)
         {
             var macro = umbraco.macro.GetMacro(alias);
-            var macroModel = macro.Model;
-
+            Hashtable attribs = new Hashtable();
             if (properties != null)
             {
-                macroModel.Properties.Clear();
                 foreach (var prop in properties)
                 {
                     var dic = prop.ToDictionary();
 
                     foreach (var d in dic)
                     {
-                        macroModel.Properties.Add(new MacroPropertyModel(d.Key, d.Value.ToString()));
+                        if (attribs.ContainsKey(d.Key))
+                            attribs[d.Key] = d.Value;
+                        else
+                            attribs.Add(d.Key, d.Value);
                     }
                 }
             }
+            //macro.UpdateMacroModel(attribs);
+            macro.GenerateMacroModelPropertiesFromAttributes(attribs);
 
             var control = macro.renderMacro(new System.Collections.Hashtable(), pageId);
 
             return control.RenderControlToString();
         }
 
-        public static IHtmlString RenderMacro(this DynamicNodeContext ctx, string alias, params object[] properties)
+        public static IHtmlString RenderMacro(this RazorLibraryCore ctx, string alias, params object[] properties)
         {
             return new HtmlString(RenderMacro(ctx.Node.Id, alias, properties));
         }
 
-        private static string ImageUrlFromMediaItem(DynamicNodeContext ctx, int mediaId, string cropProperty, string cropName)
+        private static string ImageUrlFromMediaItem(RazorLibraryCore ctx, int mediaId, string cropProperty, string cropName)
         {
             string url = null;
-            DynamicMedia media = ctx.Library.MediaById(mediaId);
+            DynamicMedia media = ctx.MediaById(mediaId);
             if (media != null)
             {
                 if (media.HasProperty(cropProperty))
@@ -62,7 +66,7 @@ namespace Tocsoft.Common.Umbraco
             return url ?? "";
         }
 
-        private static string ImageUrlFromXml(DynamicNodeContext ctx, DynamicXml media, string cropProperty, string cropName)
+        private static string ImageUrlFromXml(RazorLibraryCore ctx, DynamicXml media, string cropProperty, string cropName)
         {
             string url = null;
             if (media != null)
@@ -88,7 +92,7 @@ namespace Tocsoft.Common.Umbraco
             return url ?? "";
         }
 
-        public static IEnumerable<string> ImageUrls(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
+        public static IEnumerable<string> ImageUrls(this RazorLibraryCore ctx, DynamicNode node, string alias, string cropProperty, string cropName)
         {
             var mediaProp = node.GetProperty(alias);
 
@@ -121,19 +125,19 @@ namespace Tocsoft.Common.Umbraco
             }
         }
 
-        public static string ImageUrl(this DynamicNodeContext ctx, DynamicNode node, string alias, string cropProperty, string cropName)
+        public static string ImageUrl(this RazorLibraryCore ctx, DynamicNode node, string alias, string cropProperty, string cropName)
         {
             return ImageUrls(ctx, node, alias, cropProperty, cropName).FirstOrDefault();
         }
 
-        public static IEnumerable<string> ImageUrls(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        public static IEnumerable<string> ImageUrls(this RazorLibraryCore ctx, string alias, string cropProperty, string cropName)
         {
-            return ImageUrls(ctx, ctx.Current, alias, cropProperty, cropName);
+            return ImageUrls(ctx, new DynamicNode(ctx.Node), alias, cropProperty, cropName);
         }
 
-        public static string ImageUrl(this DynamicNodeContext ctx, string alias, string cropProperty, string cropName)
+        public static string ImageUrl(this RazorLibraryCore ctx, string alias, string cropProperty, string cropName)
         {
-            return ImageUrl(ctx, ctx.Current, alias, cropProperty, cropName);
+            return ImageUrl(ctx, new DynamicNode(ctx.Node), alias, cropProperty, cropName);
         }
     }
 }
