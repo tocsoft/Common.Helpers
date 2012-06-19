@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.UI;
 using Tocsoft.Common.Helpers;
 using Tocsoft.Common.Helpers.Web;
 using umbraco.cms.businesslogic.macro;
@@ -16,7 +18,15 @@ namespace Tocsoft.Common.Umbraco
     {
         public static string RenderMacro(int pageId, string alias, params object[] properties)
         {
+            return GetMacroControl(pageId, alias, properties).RenderControlToString();
+        }
+
+        public static Control GetMacroControl(int pageId, string alias, params object[] properties)
+        {
             var macro = umbraco.macro.GetMacro(alias);
+
+            //converting object[] into a single hash table merging common property names,
+            //overwriting previously inserted values.
             Hashtable attribs = new Hashtable();
             if (properties != null)
             {
@@ -33,20 +43,21 @@ namespace Tocsoft.Common.Umbraco
                     }
                 }
             }
-            //macro.UpdateMacroModel(attribs);
+
             macro.GenerateMacroModelPropertiesFromAttributes(attribs);
 
-            var control = macro.renderMacro(new System.Collections.Hashtable(), pageId);
-
-            return control.RenderControlToString();
+            return  macro.renderMacro(new Hashtable(), pageId);
         }
 
         public static IHtmlString RenderMacro(this RazorLibraryCore ctx, string alias, params object[] properties)
         {
-            return new HtmlString(RenderMacro(ctx.Node.Id, alias, properties));
+            //wrap the control returned in a ControlHtmlString that is used to render the control to a
+            //string then exposes that string as a HtmlString so Razor will render the contents correctly
+            return new ControlHtmlString(GetMacroControl(ctx.Node.Id, alias, properties));
         }
 
         private static string ImageUrlFromMediaItem(RazorLibraryCore ctx, int mediaId, string cropProperty, string cropName)
+
         {
             string url = null;
             DynamicMedia media = ctx.MediaById(mediaId);
