@@ -3,30 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Tocsoft.Common.Helpers
 {
     public static class Async
     {
+        [Obsolete("Use Tasks")]
         public static void Run<T>(Func<T> action, Action<T> callback) {
-            var bw = new BackgroundWorker();
-            bw.DoWork += (s, e) => {
-                e.Result = action();
-            };
-            if (callback != null)
+            System.Threading.Tasks.Task.Run(()=>{
+                return action();
+            }).ContinueWith(t =>
             {
-                bw.RunWorkerCompleted += (s, e) =>
-                {
-                    callback((T)e.Result);
-                };
-            }
+                callback(t.Result);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
+
+        [Obsolete("Use Tasks")]
         public static void Run(Action action) {
-            Run(() =>
-            {
-                action();
-                return (object)null;
-            }, null);
+            System.Threading.Tasks.Task.Run(action);
         }
     }
 }
